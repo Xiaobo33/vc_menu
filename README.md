@@ -1,4 +1,6 @@
-# 浙妹子 × VC Menu PWA（手机点餐）
+# ZMZ × VC Menu PWA（手机点餐）
+
+This is a menu ordering system developed entirely with AI just to test vibecoding and have fun.
 
 一个手机优先的 PWA 点餐系统：顾客扫码下单，商家在 `/admin` 管理订单。
 
