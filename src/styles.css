@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
+  --text: #0f172a;
+  --text-soft: #475569;
+  --primary: #0ea5a0;
+  --primary-strong: #0f766e;
+  --danger: #dc2626;
+  --radius-lg: 20px;
+}
+
+.dark {
+  --bg: #0b1220;
+  --surface: #131d31;
+  --surface-soft: #1f2a44;
+  --text: #f8fafc;
+  --text-soft: #cbd5e1;
+  --primary: #2dd4bf;
+  --primary-strong: #14b8a6;
+  --danger: #ef4444;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans SC', sans-serif;
+  background: radial-gradient(circle at top, #dff5f2 0%, var(--bg) 40%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.dark body {
+  background: radial-gradient(circle at top, #10243f 0%, var(--bg) 45%);
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+@layer components {
+  .app-shell {
+    @apply mx-auto min-h-screen w-full max-w-md px-4 pb-28 pt-4;
+  }
+
+  .panel {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    @apply shadow-soft;
+  }
+
+  .muted {
+    color: var(--text-soft);
+  }
+
+  .chip {
+    border-radius: 9999px;
+    @apply px-4 py-2 text-sm font-semibold;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+    color: #fff;
+    @apply rounded-2xl px-4 py-3 font-semibold;
+  }
+
+  .btn-ghost {
+    background: var(--surface-soft);
+    color: var(--text);
+    @apply rounded-2xl px-4 py-3 font-semibold;
+  }
+}
