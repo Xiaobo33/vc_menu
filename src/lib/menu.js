@@ -22,12 +22,20 @@ export async function fetchMenu() {
 
 export async function createOrder(payload) {
   const sb = requireSupabase();
-  const { data, error } = await sb
+  const orderId = globalThis.crypto?.randomUUID?.() || `order-${Date.now()}`;
+  const createdAt = new Date().toISOString();
+
+  const { error } = await sb
     .from('orders')
-    .insert(payload)
-    .select('id, created_at')
-    .single();
+    .insert({
+      ...payload,
+      id: orderId,
+      created_at: createdAt
+    });
 
   if (error) throw error;
-  return data;
+  return {
+    id: orderId,
+    created_at: createdAt
+  };
 }
