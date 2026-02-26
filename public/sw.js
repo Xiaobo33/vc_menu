@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vc-menu-cache-v1';
+const CACHE_NAME = 'vc-menu-cache-v2';
 const APP_SHELL = ['/', '/index.html', '/manifest.json', '/icons/icon-192.svg', '/icons/icon-512.svg'];
 
 self.addEventListener('install', (event) => {
@@ -18,16 +18,35 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
+  const isSameOrigin = url.origin === self.location.origin;
 
-  if (url.origin === self.location.origin) {
+  if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match(request).then((cached) => {
-        if (cached) return cached;
-        return fetch(request).then((response) => {
+      fetch(request)
+        .then((response) => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
           return response;
-        });
+        })
+        .catch(async () => {
+          const cached = await caches.match(request);
+          return cached || caches.match('/index.html');
+        })
+    );
+    return;
+  }
+
+  if (isSameOrigin && ['script', 'style', 'image', 'font'].includes(request.destination)) {
+    event.respondWith(
+      caches.match(request).then(async (cached) => {
+        const networkPromise = fetch(request)
+          .then((response) => {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            return response;
+          })
+          .catch(() => cached);
+        return cached || networkPromise;
       })
     );
     return;
